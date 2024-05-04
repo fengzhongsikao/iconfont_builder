@@ -8,13 +8,13 @@ executables:
   iconfont_builder: iconfont_builder
 
 environment:
-  sdk: ">=2.3.0 <3.0.0"
+  sdk: ">=3.3.0 <4.0.0"
 
 dependencies:
-  args: ^1.5.1
-  lpinyin: ^1.0.7
+  args: 2.5.0
+  lpinyin: ^2.0.3
 
-dev_dependencies:
+#dev_dependencies:
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec
 
