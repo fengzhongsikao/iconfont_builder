@@ -4,7 +4,7 @@ version: 1.0.6
 homepage: https://github.com/ymzuiku/iconfont_builder
 
 executables:
-  iconfont_builder: iconfont_builder
+  iconfont_builder2: iconfont_builder2
 
 environment:
   sdk: ">=3.3.0 <4.0.0"

@@ -1,4 +1,4 @@
-library iconfont_builder;
+library iconfont_builder2;
 
 // 通过pub global activate 全局注册
 // pub global activate --source path ./
