@@ -6,7 +6,7 @@ import 'dart:io';
 import 'package:args/args.dart';
 import 'package:lpinyin/lpinyin.dart';
 
-ArgResults args;
+ArgResults? args;
 
 void main(List<String> arguments) {
 // 创建ArgParser的实例，同时指定需要输入的参数
@@ -23,7 +23,7 @@ void main(List<String> arguments) {
 
   args = argParser.parse(arguments);
 
-  if (args['help']) {
+  if (args?['help']) {
     print("""
 ---- HELP ----
 ${argParser.usage}
@@ -108,10 +108,10 @@ List<String> symbols = [
 ];
 
 void logic() {
-  final fromHtmlPath = pwd('${args['from']}/demo_index.html');
-  final toDartPath = pwd(args['to']);
+  final fromHtmlPath = pwd('${args?['from']}/demo_index.html');
+  final toDartPath = pwd(args?['to']);
 
-  if (args['focus'] != 'true' && File(toDartPath).existsSync()) {
+  if (args?['focus'] != 'true' && File(toDartPath).existsSync()) {
     print('[Error]');
     print('Have file at: $toDartPath');
     print('If your need overlay file, please add "--focus true" in params');
@@ -133,16 +133,16 @@ void logic() {
 
   List<String> names = [];
   List<String> tips = [];
-  Set<String> nameSet = Set();
+  Set<String>? nameSet = Set();
   List<String> values = [];
   var valuesMatches = valueReg.allMatches(html);
   var namesMatches = nameReg.allMatches(html);
 
   for (var n in valuesMatches) {
-    String v = n.group(0);
-    v = v.replaceFirst('<span class="icon iconfont">&#', '0');
-    v = v.replaceFirst(';</span>', '');
-    values.add(v);
+    String? v = n.group(0);
+    v = v?.replaceFirst('<span class="icon iconfont">&#', '0');
+    v = v?.replaceFirst(';</span>', '');
+    values.add(v!);
   }
 
   int re = 0;
@@ -150,13 +150,13 @@ void logic() {
     if (names.length == values.length) {
       break;
     }
-    String v = n.group(0);
+    String? v = n.group(0);
 
-    v = v.replaceFirst('<div class="name">', '');
-    v = v.replaceFirst('</div>', '');
+    v = v?.replaceFirst('<div class="name">', '');
+    v = v?.replaceFirst('</div>', '');
 
     // 储存原始名称，作为注释
-    tips.add(v);
+    tips.add(v!);
 
     // 不允许以数字或下划线开头
     if ('0123456789'.contains(v[0]) || '_'.contains(v[0])) {
@@ -168,37 +168,37 @@ void logic() {
 
     // 不允许使用特殊字符
     symbols.forEach((key) {
-      v = v.replaceAll(key, '');
+      v = v?.replaceAll(key, '');
     });
 
     // 不允许使用关键字
     keyword.forEach((key) {
       if (v == key) {
-        v = v + 'NoUseThisWord';
+        v = (v! + 'NoUseThisWord');
       }
     });
 
     // 中文转拼音
-    v = PinyinHelper.getPinyinE(v);
-    v = v.replaceAll(' ', '');
+    v = PinyinHelper.getPinyinE(v!);
+    v = v?.replaceAll(' ', '');
 
     // 如果名字重复，就在尾部递增
     if (nameSet.contains(v)) {
       re++;
-      v += re.toString();
+      v =(v!+ re.toString());
     }
-    names.add(v);
-    nameSet.add(v);
+    names.add(v!);
+    nameSet.add(v!);
   }
   nameSet = null;
 
   String icons = '';
-  String fileString;
+  String fileString="";
   for (var i = 0; i < values.length; i++) {
-    if (args['type'] == 'Icon') {
+    if (args?['type'] == 'Icon') {
       icons += icon(names[i], values[i], tips[i]);
       fileString = fileIcon(icons);
-    } else if (args['type'] == 'IconData') {
+    } else if (args?['type'] == 'IconData') {
       icons += iconData(names[i], values[i], tips[i]);
       fileString = fileIconData(icons);
     }
@@ -215,12 +215,12 @@ import 'package:flutter/material.dart';
 IconData makeIcon(int value) {
   return IconData(
     value,
-    fontFamily: '${args['family']}',
+    fontFamily: '${args?['family']}',
     matchTextDirection: true,
   );
 }
 
-class ${args['class']} {
+class ${args?['class']} {
   $icons
 }
 ''';
@@ -230,7 +230,7 @@ String fileIconData(String icons) {
   return '''
 import 'package:flutter/material.dart';
 
-class ${args['class']} {
+class ${args?['class']} {
   $icons
 }
 ''';
@@ -251,7 +251,7 @@ String iconData(String name, String value, String tip) {
   // iconName: $tip
   static const $name = IconData(
     $value,
-    fontFamily: '${args['family']}',
+    fontFamily: '${args?['family']}',
     matchTextDirection: true,
   );
 
